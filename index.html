@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chuck Norris Sidekick Simulator</title>
+  </head>
+  <body>
+    <h3>Hat Making Machine</h3>
+    <form id="hatFactory">
+      <label for="startMachine">Start Cowboy-Hat-Making-Machine?</label>
+      <input type="checkbox" name="startMachine" id="startMachine" />
+      <br />
+      <label for="typeOfHat">Type of Hat:</label>
+      <select id="typeOfHat" name="typeOfHat">
+        <option value="normalHat">Normal Cowboy Hat</option>
+        <option value="fancyHat">Fancy Cowboy Hat</option>
+        <option value="extraDangerousHat">Extra-Dangerous Cowboy Hat</option>
+      </select>
+      <br />
+
+      <input
+        id="submitButton"
+        type="submit"
+        value="Start Making Cowboy Hat"
+        disabled
+      />
+    </form>
+
+    <h3>Chuck Norris's Inventory</h3>
+    <p id="inventoryDisplay"></p>
+  </body>
+
+  <script>
+    // Sets variables
+    let serverInventory = [];
+    const inventoryDisplay = document.getElementById("inventoryDisplay");
+
+    pullInventoryFromServer();
+
+    // Sets up Hat-Making Machine (Input form)
+    let hatFactoryForm = document.getElementById("hatFactory");
+    hatFactoryForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var formData = new FormData(event.target);
+      var data = Object.fromEntries(formData.entries());
+      console.log("Form Data: ", data);
+      postToServer(data);
+    });
+
+    // Sets up Hat-Making Machine (Startup)
+    const checkBox = document.getElementById("startMachine");
+    checkBox.addEventListener("click", function (event) {
+      if (!checkBox.checked) {
+        document.getElementById("submitButton").disabled = true;
+      } else {
+        document.getElementById("submitButton").disabled = false;
+      }
+    });
+
+    // Pulls Inventory from Server
+    function pullInventoryFromServer() {
+      fetch("http://localhost:3333/toChuck", {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          console.log("Get - response from server: ", data);
+          serverInventory = data;
+          renderInventoryOnPage(serverInventory);
+        });
+    }
+
+    // Sends Created Hat to Server
+    function postToServer(dataObj) {
+      const dataString = JSON.stringify(dataObj);
+      fetch("http://localhost:3333/toChuck", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: dataString,
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          console.log("Post- response from server:", data);
+          serverInventory = data;
+          pullInventoryFromServer();
+        });
+    }
+
+    // Displays Inventory on Page
+    function renderInventoryOnPage(invData) {
+      if (serverInventory === "") {
+        inventoryDisplay.innerText = "There are zero hats";
+      } else {
+        for (const iterator of invData) {
+          inventoryDisplay.innerHTML += `${iterator} <button class="deleteButton" data-index="${iterator}">delete</button><br>`;
+        }
+      }
+    }
+
+    // Enables Deleting Inventory Items
+    window.addEventListener("click", function (event) {
+      if (event.target.classList.contains("deleteButton")) {
+        console.log(event.target);
+        const itemIndex = event.target.dataset.index;
+        console.log(itemIndex);
+        deleteItem(itemIndex);
+      }
+    });
+  </script>
+</html>
