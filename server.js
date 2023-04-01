@@ -35,6 +35,14 @@ server.post("/toChuck", function (req, res) {
   res.json(chuckInventory);
 });
 
+server.delete("/toChuck/:deleteThisIndex", function (req, res) {
+  const { deleteThisIndex } = req.params;
+  console.log(deleteThisIndex);
+  chuckInventory.splice(deleteThisIndex, 1);
+  saveInventory();
+  res.json(chuckInventory);
+});
+
 /* BOTTOM TEMPLATE START */
 server.get("*", function (req, res) {
   res.sendFile(__dirname + "/404.html");

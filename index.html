@@ -29,7 +29,7 @@
     </form>
 
     <h3>Chuck Norris's Inventory</h3>
-    <p id="inventoryDisplay"></p>
+    <div id="inventoryDisplay"></div>
   </body>
 
   <script>
@@ -45,7 +45,6 @@
       event.preventDefault();
       var formData = new FormData(event.target);
       var data = Object.fromEntries(formData.entries());
-      console.log("Form Data: ", data);
       postToServer(data);
     });
 
@@ -72,8 +71,8 @@
           return response.json();
         })
         .then(function (data) {
-          console.log("Get - response from server: ", data);
           serverInventory = data;
+          console.log("Server Inventory: ", serverInventory);
           renderInventoryOnPage(serverInventory);
         });
     }
@@ -93,7 +92,6 @@
           return response.json();
         })
         .then(function (data) {
-          console.log("Post- response from server:", data);
           serverInventory = data;
           pullInventoryFromServer();
         });
@@ -104,20 +102,33 @@
       if (serverInventory === "") {
         inventoryDisplay.innerText = "There are zero hats";
       } else {
+        inventoryDisplay.innerHTML = "";
         for (const iterator of invData) {
           inventoryDisplay.innerHTML += `${iterator} <button class="deleteButton" data-index="${iterator}">delete</button><br>`;
         }
       }
     }
 
-    // Enables Deleting Inventory Items
+    // Enables Delete Button
     window.addEventListener("click", function (event) {
       if (event.target.classList.contains("deleteButton")) {
-        console.log(event.target);
         const itemIndex = event.target.dataset.index;
-        console.log(itemIndex);
         deleteItem(itemIndex);
       }
     });
+
+    // Enables Deletion Functionality
+    function deleteItem(index) {
+      fetch(`http://localhost:3333/toChuck/${index}`, {
+        method: "DELETE",
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          serverInventory = data;
+          renderInventoryOnPage(serverInventory);
+        });
+    }
   </script>
 </html>
