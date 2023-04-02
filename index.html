@@ -102,8 +102,10 @@
       if (serverInventory === "") {
         inventoryDisplay.innerText = "There are zero hats";
       } else {
+        // All the chaos is happening in here. Between this and the delete-route
         inventoryDisplay.innerHTML = "";
         for (const iterator of invData) {
+          console.log("You're displaying: ", iterator);
           inventoryDisplay.innerHTML += `${iterator} <button class="deleteButton" data-index="${iterator}">delete</button><br>`;
         }
       }
@@ -113,7 +115,9 @@
     window.addEventListener("click", function (event) {
       if (event.target.classList.contains("deleteButton")) {
         const itemIndex = event.target.dataset.index;
+        console.log("You are deleting: Itemindex ", itemIndex);
         deleteItem(itemIndex);
+        console.log("After deletion, server inventory is: ", serverInventory);
       }
     });
 
@@ -123,9 +127,11 @@
         method: "DELETE",
       })
         .then(function (response) {
+          // The index being sent is the hat name
           return response.json();
         })
         .then(function (data) {
+          console.log("Post-delete server response: ", data);
           serverInventory = data;
           renderInventoryOnPage(serverInventory);
         });

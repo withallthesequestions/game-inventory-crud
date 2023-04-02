@@ -37,8 +37,10 @@ server.post("/toChuck", function (req, res) {
 
 server.delete("/toChuck/:deleteThisIndex", function (req, res) {
   const { deleteThisIndex } = req.params;
-  console.log(deleteThisIndex);
+  console.log("You're deleting", deleteThisIndex);
   chuckInventory.splice(deleteThisIndex, 1);
+  // The problem seems to narrow down to this splicing. But in reality, it seems to go to the item indexes in the HTML's display function.
+  console.log("Now, the inventory looks like: ", chuckInventory);
   saveInventory();
   res.json(chuckInventory);
 });
