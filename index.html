@@ -104,9 +104,12 @@
       } else {
         // All the chaos is happening in here. Between this and the delete-route
         inventoryDisplay.innerHTML = "";
-        for (const iterator of invData) {
+        /*    for (const iterator of invData) {
           console.log("You're displaying: ", iterator);
           inventoryDisplay.innerHTML += `${iterator} <button class="deleteButton" data-index="${iterator}">delete</button><br>`;
+        } */
+        for (let [index, value] of invData.entries()) {
+          inventoryDisplay.innerHTML += `<li>${value}<button class="deleteButton" data-index="${index}">delete</button></li>`;
         }
       }
     }
@@ -115,9 +118,7 @@
     window.addEventListener("click", function (event) {
       if (event.target.classList.contains("deleteButton")) {
         const itemIndex = event.target.dataset.index;
-        console.log("You are deleting: Itemindex ", itemIndex);
         deleteItem(itemIndex);
-        console.log("After deletion, server inventory is: ", serverInventory);
       }
     });
 
