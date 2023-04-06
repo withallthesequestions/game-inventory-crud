@@ -2,7 +2,12 @@
  * Note the `.gitignore` file in the folder (it should contain /node_modules). Ignoring the node_modules mess is best practice when saving to git repo. */
 const express = require("express"); // Imports Express package.
 const server = express(); // express() deploys a server. Assigning it to a variable lets you operate on it.
-const PORT = 3333; // Local server port. Note the var name uses LOUDCASE. This is because its value is a magic number value.
+const PORT = process.env.PORT || 3000; // Local server port. Note the var name uses LOUDCASE. This is because its value is a magic number value.
+
+/* Testing something else: const port = process.env.PORT || 3000;
+ * Previous value was PORT = 3333
+ */
+
 server.use(express.json()); // This is middle-ware. It parses incoming requests which have JSON payloads (eg, POST requests with JSON in their bodies). In order to work, the relevant POST request must have headers which set the content type to JSON. (ie, ‘content-type: application/json’)
 const INV_FILE_NAME = "./chuckNorrisInventory.json"; // LOUDCASE, magic file-name.
 const { save, load } = require("./jsonUtil"); // In case you want to import functions from a secondary file later.
