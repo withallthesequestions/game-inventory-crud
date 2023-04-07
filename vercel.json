@@ -9,8 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "server.js"
+      "dest": "index.html"
     }
-  ],
-  "redirects": [{ "source": "/", "destination": "/index.html" }]
+  ]
 }
