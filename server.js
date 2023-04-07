@@ -35,7 +35,7 @@ server.get("/toChuck", function (req, res) {
   res.sendFile(path.join(__dirname, "/index.html"));
 });
 
-app.get("/about", (req, res) => {
+server.get("/about", (req, res) => {
   res.send("This is my about route..... ");
 });
 
