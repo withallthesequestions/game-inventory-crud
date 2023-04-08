@@ -29,10 +29,10 @@ function saveInventory() {
 }
 
 /* Testing new method below */
-const path = require("path");
+/* const path = require("path"); */
 server.get("/toChuck", function (req, res) {
-  /*   res.json(chuckInventory); */
-  res.sendFile(path.join(__dirname, "/index.html"));
+  res.json(chuckInventory);
+  /*   res.sendFile(path.join(__dirname, "/index.html")); */
 });
 
 server.get("/about", (req, res) => {
