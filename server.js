@@ -2,7 +2,7 @@
  * Note the `.gitignore` file in the folder (it should contain /node_modules). Ignoring the node_modules mess is best practice when saving to git repo. */
 const express = require("express"); // Imports Express package.
 const server = express(); // express() deploys a server. Assigning it to a variable lets you operate on it.
-const PORT = process.env.PORT || 4000; // Local server port. Note the var name uses LOUDCASE. This is because its value is a magic number value.
+const PORT = 4000; // Local server port. Note the var name uses LOUDCASE. This is because its value is a magic number value.
 
 /* This didn't work: const port = process.env.PORT || 3000;
  * Updating to 4000
@@ -28,11 +28,8 @@ function saveInventory() {
   save(INV_FILE_NAME, chuckInventory);
 }
 
-/* Testing new method below */
-/* const path = require("path"); */
 server.get("/toChuck", function (req, res) {
   res.json(chuckInventory);
-  /*   res.sendFile(path.join(__dirname, "/index.html")); */
 });
 
 server.get("/about", (req, res) => {
