@@ -1,6 +1,7 @@
 {
 	"name": "nodejs-game-inventory-crud",
 	"version": "1.0.0",
+	"type": "module",
 	"description": "",
 	"main": "server.js",
 	"dependencies": {
